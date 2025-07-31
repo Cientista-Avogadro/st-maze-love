@@ -4,35 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projeto Final - O Labirinto de Tabita</title>
-    <meta name="description" content="Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião.">
-    <meta name="keywords" content="jogo, labirinto, 3D, amor, aventura">
-    <meta name="author" content="Seu Nome ou Organização">
-    <meta property="og:title" content="O Labirinto de Tabita">
-    <meta property="og:description" content="Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião.">
-    <meta property="og:image" content="ogimage.png">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="O Labirinto de Tabita">
-    <meta name="twitter:description" content="Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião.">
-    <meta name="twitter:image" content="ogimage.png">
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <meta
+      name="description"
+      content="Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião."
+    />
+    <meta name="keywords" content="jogo, labirinto, 3D, amor, aventura" />
+    <meta name="author" content="Seu Nome ou Organização" />
+    <meta property="og:title" content="O Labirinto de Tabita" />
+    <meta
+      property="og:description"
+      content="Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião."
+    />
+    <meta property="og:image" content="ogimage.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="O Labirinto de Tabita" />
+    <meta
+      name="twitter:description"
+      content="Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião."
+    />
+    <meta name="twitter:image" content="ogimage.png" />
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "VideoGame",
-      "name": "O Labirinto de Tabita",
-      "description": "Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião.",
-      "image": "ogimage.png",
-      "genre": "Aventura",
-      "gamePlatform": "Web Browser"
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "O Labirinto de Tabita",
+        "description": "Um jogo de labirinto em 3D onde você ajuda Tabita a encontrar o seu amor, Sebastião.",
+        "image": "ogimage.png",
+        "genre": "Aventura",
+        "gamePlatform": "Web Browser"
+      }
     </script>
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TSPGJVJ3');</script>
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-TSPGJVJ3");
+    </script>
     <!-- End Google Tag Manager -->
     <style>
       body {
@@ -131,8 +147,14 @@
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSPGJVJ3"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-TSPGJVJ3"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="intro-screen" class="overlay">
       <h1>O Labirinto de Tabita</h1>
@@ -172,9 +194,11 @@
       let jogoTerminou = false;
       const wallSize = 2.5;
       let cameraOffset;
-
+      // Constante para a simulação da gravidade
+      const GRAVIDADE = 0.008;
+  
       function iniciarJogo() {
-        document.getElementById("intro-screen").style.display = "none";
+        document.getElementById('intro-screen').style.display = 'none';
         configurarCena();
         configurarLuzes();
         gerarLabirinto();
@@ -183,122 +207,100 @@
         configurarControlos();
         animar();
       }
-
+  
       function configurarCena() {
         cena = new THREE.Scene();
         cena.background = new THREE.Color(0x1a1a2a);
-
-        camera = new THREE.PerspectiveCamera(
-          75,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000
-        );
-
+  
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
         renderizador = new THREE.WebGLRenderer({ antialias: true });
         renderizador.setSize(window.innerWidth, window.innerHeight);
         renderizador.shadowMap.enabled = true;
         document.body.appendChild(renderizador.domElement);
-
+  
         const geometriaChao = new THREE.PlaneGeometry(200, 200);
-        const materialChao = new THREE.MeshStandardMaterial({
-          color: 0x4a4a5a,
-        });
+        const materialChao = new THREE.MeshStandardMaterial({ color: 0x4a4a5a });
         const chao = new THREE.Mesh(geometriaChao, materialChao);
         chao.rotation.x = -Math.PI / 2;
         chao.receiveShadow = true;
         cena.add(chao);
       }
-
+  
       function configurarLuzes() {
         const luzAmbiente = new THREE.AmbientLight(0x404060);
         cena.add(luzAmbiente);
-
+  
         const luzDirecional = new THREE.DirectionalLight(0xffffff, 0.7);
         luzDirecional.position.set(15, 30, 20);
         luzDirecional.castShadow = true;
         cena.add(luzDirecional);
       }
-
+  
       function gerarLayoutAleatorio(largura, altura) {
-        if (largura % 2 === 0) largura++;
-        if (altura % 2 === 0) altura++;
-
-        const layout = Array(altura)
-          .fill(0)
-          .map(() => Array(largura).fill(1));
-        const stack = [];
-
-        function getVizinhos(x, y) {
-          const vizinhos = [];
-          if (y > 1 && layout[y - 2][x] === 1)
-            vizinhos.push({ x: x, y: y - 2, dir: "CIMA" });
-          if (y < altura - 2 && layout[y + 2][x] === 1)
-            vizinhos.push({ x: x, y: y + 2, dir: "BAIXO" });
-          if (x > 1 && layout[y][x - 2] === 1)
-            vizinhos.push({ x: x - 2, y: y, dir: "ESQUERDA" });
-          if (x < largura - 2 && layout[y][x + 2] === 1)
-            vizinhos.push({ x: x + 2, y: y, dir: "DIREITA" });
-          return vizinhos;
-        }
-
-        let atualX = 1,
-          atualY = 1;
-        layout[atualY][atualX] = 0;
-        stack.push({ x: atualX, y: atualY });
-
-        while (stack.length > 0) {
-          const vizinhos = getVizinhos(atualX, atualY);
-
-          if (vizinhos.length > 0) {
-            const proximo =
-              vizinhos[Math.floor(Math.random() * vizinhos.length)];
-            if (proximo.dir === "CIMA") layout[atualY - 1][atualX] = 0;
-            if (proximo.dir === "BAIXO") layout[atualY + 1][atualX] = 0;
-            if (proximo.dir === "ESQUERDA") layout[atualY][atualX - 1] = 0;
-            if (proximo.dir === "DIREITA") layout[atualY][atualX + 1] = 0;
-
-            stack.push({ x: atualX, y: atualY });
-            atualX = proximo.x;
-            atualY = proximo.y;
-            layout[atualY][atualX] = 0;
-          } else {
-            const anterior = stack.pop();
-            atualX = anterior.x;
-            atualY = anterior.y;
+          if (largura % 2 === 0) largura++;
+          if (altura % 2 === 0) altura++;
+  
+          const layout = Array(altura).fill(0).map(() => Array(largura).fill(1));
+          const stack = [];
+          
+          function getVizinhos(x, y) {
+              const vizinhos = [];
+              if (y > 1 && layout[y - 2][x] === 1) vizinhos.push({x: x, y: y - 2, dir: 'CIMA'});
+              if (y < altura - 2 && layout[y + 2][x] === 1) vizinhos.push({x: x, y: y + 2, dir: 'BAIXO'});
+              if (x > 1 && layout[y][x - 2] === 1) vizinhos.push({x: x - 2, y: y, dir: 'ESQUERDA'});
+              if (x < largura - 2 && layout[y][x + 2] === 1) vizinhos.push({x: x + 2, y: y, dir: 'DIREITA'});
+              return vizinhos;
           }
-        }
-
-        layout[1][0] = 2;
-        layout[1][1] = 0;
-        layout[altura - 2][largura - 1] = 3;
-        layout[altura - 2][largura - 2] = 0;
-
-        return layout;
+  
+          let atualX = 1, atualY = 1;
+          layout[atualY][atualX] = 0;
+          stack.push({x: atualX, y: atualY});
+  
+          while (stack.length > 0) {
+              const vizinhos = getVizinhos(atualX, atualY);
+  
+              if (vizinhos.length > 0) {
+                  const proximo = vizinhos[Math.floor(Math.random() * vizinhos.length)];
+                  if (proximo.dir === 'CIMA') layout[atualY - 1][atualX] = 0;
+                  if (proximo.dir === 'BAIXO') layout[atualY + 1][atualX] = 0;
+                  if (proximo.dir === 'ESQUERDA') layout[atualY][atualX - 1] = 0;
+                  if (proximo.dir === 'DIREITA') layout[atualY][atualX + 1] = 0;
+  
+                  stack.push({x: atualX, y: atualY});
+                  atualX = proximo.x;
+                  atualY = proximo.y;
+                  layout[atualY][atualX] = 0;
+              } else {
+                  const anterior = stack.pop();
+                  atualX = anterior.x;
+                  atualY = anterior.y;
+              }
+          }
+  
+          layout[1][0] = 2;
+          layout[1][1] = 0;
+          layout[altura - 2][largura - 1] = 3;
+          layout[altura - 2][largura - 2] = 0;
+  
+          return layout;
       }
-
-      // Senhor professor , criei essa funcção para gerar o labirinto de forma aleatória,
+  
       function gerarLabirinto() {
         const layout = gerarLayoutAleatorio(21, 15);
-        const geometriaParede = new THREE.BoxGeometry(
-          wallSize,
-          wallSize,
-          wallSize
-        );
-        const materialParede = new THREE.MeshStandardMaterial({
-          color: 0x8a2be2,
-        });
-
+        const geometriaParede = new THREE.BoxGeometry(wallSize, wallSize, wallSize);
+        const materialParede = new THREE.MeshStandardMaterial({ color: 0x8a2be2 });
+  
         const mazeWidth = layout[0].length * wallSize;
         const mazeDepth = layout.length * wallSize;
         const offsetX = -mazeWidth / 2;
         const offsetZ = -mazeDepth / 2;
-
+  
         for (let i = 0; i < layout.length; i++) {
           for (let j = 0; j < layout[i].length; j++) {
             const x = j * wallSize + offsetX + wallSize / 2;
             const z = i * wallSize + offsetZ + wallSize / 2;
-
+  
             if (layout[i][j] === 1) {
               const parede = new THREE.Mesh(geometriaParede, materialParede);
               parede.position.set(x, wallSize / 2, z);
@@ -313,100 +315,66 @@
           }
         }
       }
-
+  
       function criarTabita() {
         const alturaTabita = wallSize * 0.6;
         const raioTabita = wallSize * 0.2;
-        const geometriaTabita = new THREE.CylinderGeometry(
-          raioTabita,
-          raioTabita,
-          alturaTabita,
-          32
-        );
-        const materialTabita = new THREE.MeshStandardMaterial({
-          color: 0xff69b4,
-        });
+        const geometriaTabita = new THREE.CylinderGeometry(raioTabita, raioTabita, alturaTabita, 32);
+        const materialTabita = new THREE.MeshStandardMaterial({ color: 0xff69b4 });
         tabita = new THREE.Mesh(geometriaTabita, materialTabita);
         tabita.castShadow = true;
-        tabita.position.set(
-          this.pontoPartida.x,
-          alturaTabita / 2,
-          this.pontoPartida.z
-        );
+        
+        // Para demonstrar a gravidade, a Tabita começa um pouco acima do chão
+        tabita.position.set(this.pontoPartida.x, alturaTabita / 2 + 5, this.pontoPartida.z);
+        
+        // Adiciona um vetor de velocidade para a física da gravidade
+        tabita.velocity = new THREE.Vector3(0, 0, 0);
+        
         cena.add(tabita);
       }
-
+  
       function criarSebastiao() {
         sebastiao = new THREE.Group();
-        const materialCorpo = new THREE.MeshStandardMaterial({
-          color: 0x0000ff,
-        });
-        const materialCabeca = new THREE.MeshStandardMaterial({
-          color: 0xffdbac,
-        });
-
-        const corpo = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.5, 0.7, 1.5, 32),
-          materialCorpo
-        );
+        const materialCorpo = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+        const materialCabeca = new THREE.MeshStandardMaterial({ color: 0xffdbac });
+        
+        const corpo = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.7, 1.5, 32), materialCorpo);
         corpo.position.y = 0.75;
-
-        const cabeca = new THREE.Mesh(
-          new THREE.SphereGeometry(0.5, 32, 32),
-          materialCabeca
-        );
+        
+        const cabeca = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), materialCabeca);
         cabeca.position.y = 1.9;
-
+        
         sebastiao.add(corpo, cabeca);
         sebastiao.castShadow = true;
-        sebastiao.children.forEach((child) => (child.castShadow = true));
+        sebastiao.children.forEach(child => child.castShadow = true);
         sebastiao.position.set(this.pontoFinal.x, 0, this.pontoFinal.z);
         cena.add(sebastiao);
       }
-
+  
       function configurarControlos() {
-        window.addEventListener("keydown", (e) => {
-          teclas[e.key.toLowerCase()] = true;
-        });
-        window.addEventListener("keyup", (e) => {
-          teclas[e.key.toLowerCase()] = false;
-        });
-
-        // Faz com que quando o utilizador estiver no telefone, os botões de controlo apareçam
-        if ("ontouchstart" in window) {
-          document.getElementById("mobile-controls").style.display = "block";
-          const btnUp = document.getElementById("btn-up");
-          const btnDown = document.getElementById("btn-down");
-          const btnLeft = document.getElementById("btn-left");
-          const btnRight = document.getElementById("btn-right");
+        window.addEventListener('keydown', (e) => { teclas[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { teclas[e.key.toLowerCase()] = false; });
+        
+        if ('ontouchstart' in window) {
+          document.getElementById('mobile-controls').style.display = 'block';
+          const btnUp = document.getElementById('btn-up');
+          const btnDown = document.getElementById('btn-down');
+          const btnLeft = document.getElementById('btn-left');
+          const btnRight = document.getElementById('btn-right');
           const adicionarListenersToque = (elemento, tecla) => {
-            elemento.addEventListener(
-              "touchstart",
-              (e) => {
-                e.preventDefault();
-                teclas[tecla] = true;
-              },
-              { passive: false }
-            );
-            elemento.addEventListener(
-              "touchend",
-              (e) => {
-                e.preventDefault();
-                teclas[tecla] = false;
-              },
-              { passive: false }
-            );
+            elemento.addEventListener('touchstart', (e) => { e.preventDefault(); teclas[tecla] = true; }, { passive: false });
+            elemento.addEventListener('touchend', (e) => { e.preventDefault(); teclas[tecla] = false; }, { passive: false });
           };
-          adicionarListenersToque(btnUp, "w");
-          adicionarListenersToque(btnDown, "s");
-          adicionarListenersToque(btnLeft, "a");
-          adicionarListenersToque(btnRight, "d");
+          adicionarListenersToque(btnUp, 'w');
+          adicionarListenersToque(btnDown, 's');
+          adicionarListenersToque(btnLeft, 'a');
+          adicionarListenersToque(btnRight, 'd');
         }
-
-        window.addEventListener("resize", onWindowResize);
+  
+        window.addEventListener('resize', onWindowResize);
         setCameraOffset();
       }
-
+      
       function verificarColisoes() {
         const caixaTabita = new THREE.Box3().setFromObject(tabita);
         for (const parede of paredes) {
@@ -415,55 +383,69 @@
         }
         return false;
       }
-
+  
       function animar() {
         if (jogoTerminou) return;
         requestAnimationFrame(animar);
-
+  
         const velocidade = 0.1;
         const posAnterior = tabita.position.clone();
-
-        if (teclas["w"] || teclas["arrowup"]) tabita.position.z -= velocidade;
-        if (teclas["s"] || teclas["arrowdown"]) tabita.position.z += velocidade;
-        if (teclas["a"] || teclas["arrowleft"]) tabita.position.x -= velocidade;
-        if (teclas["d"] || teclas["arrowright"])
-          tabita.position.x += velocidade;
-
+  
+        // --- Início da Lógica de Gravidade ---
+        const alturaDoChao = (wallSize * 0.6) / 2;
+        // Só aplica gravidade se a personagem não estiver no chão
+        if (tabita.position.y > alturaDoChao) {
+          tabita.velocity.y -= GRAVIDADE;
+        } else {
+          tabita.velocity.y = 0;
+        }
+        tabita.position.y += tabita.velocity.y;
+        // Corrige a posição se atravessar o chão
+        if (tabita.position.y < alturaDoChao) {
+          tabita.position.y = alturaDoChao;
+        }
+        // --- Fim da Lógica de Gravidade ---
+  
+        if (teclas['w'] || teclas['arrowup']) tabita.position.z -= velocidade;
+        if (teclas['s'] || teclas['arrowdown']) tabita.position.z += velocidade;
+        if (teclas['a'] || teclas['arrowleft']) tabita.position.x -= velocidade;
+        if (teclas['d'] || teclas['arrowright']) tabita.position.x += velocidade;
+  
         if (verificarColisoes()) {
           tabita.position.copy(posAnterior);
         }
-
+        
         const posicaoAlvoCamera = tabita.position.clone().add(cameraOffset);
         camera.position.lerp(posicaoAlvoCamera, 0.05);
         camera.lookAt(tabita.position);
-
+  
         const caixaTabita = new THREE.Box3().setFromObject(tabita);
         const caixaSebastiao = new THREE.Box3().setFromObject(sebastiao);
         if (caixaTabita.intersectsBox(caixaSebastiao)) {
           jogoTerminou = true;
-          document.getElementById("win-message").style.display = "flex";
+          document.getElementById('win-message').style.display = 'flex';
         }
-
+  
         renderizador.render(cena, camera);
       }
-
+  
       function setCameraOffset() {
-        const width = window.innerWidth;
-        let y_offset, z_offset;
-
-        if (width < 600) {
-          y_offset = 28;
-          z_offset = 18;
-        } else if (width < 1024) {
-          y_offset = 24;
-          z_offset = 15;
-        } else {
-          y_offset = 20;
-          z_offset = 12;
-        }
-        cameraOffset = new THREE.Vector3(0, y_offset, z_offset);
+          const width = window.innerWidth;
+          let y_offset, z_offset;
+  
+          if (width < 600) {
+              y_offset = 28;
+              z_offset = 18;
+          } else if (width < 1024) {
+              y_offset = 24;
+              z_offset = 15;
+          } else {
+              y_offset = 20;
+              z_offset = 12;
+          }
+          cameraOffset = new THREE.Vector3(0, y_offset, z_offset);
       }
-
+  
       function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
